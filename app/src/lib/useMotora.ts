@@ -70,9 +70,10 @@ export function useMotora() {
   }, [client]);
 
   useEffect(() => {
+    // Sin auto-refresh: el RPC público de Devnet limita a ~5 llamadas por ventana
+    // y cada refresh hace varias peticiones `all()`. La UI se actualiza al firmar
+    // una transacción y mediante el botón "Actualizar" de la cabecera.
     void refresh();
-    const id = setInterval(() => void refresh(), 20000);
-    return () => clearInterval(id);
   }, [refresh]);
 
   const run = useCallback(

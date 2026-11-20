@@ -476,7 +476,7 @@ export default function Home() {
                     <p className="mt-3 text-sm text-slate-200">{c.account.description}</p>
                     {c.account.resolution && <p className="mt-2 text-xs text-muted">Resolución: {c.account.resolution}</p>}
                     <p className="mt-2 font-mono text-[10px] leading-relaxed text-muted">
-                      moto {short(c.account.motorcycle.toBase58(), 4)} · servicio {short(c.account.service_record.toBase58(), 4)} · reclamante {short(c.account.claimant.toBase58(), 4)}
+                      moto {short(c.account.motorcycle.toBase58(), 4)} · servicio {short(c.account.serviceRecord.toBase58(), 4)} · reclamante {short(c.account.claimant.toBase58(), 4)}
                     </p>
                     {status(c.account.status) === "open" && isWorkshopAuthority(m, c.account.workshop.toBase58()) && (
                       <div className="mt-3 flex gap-2">
@@ -487,7 +487,7 @@ export default function Home() {
                             m.client.resolveWarrantyClaim({
                               authority: m.wallet.publicKey!,
                               motorcycle: c.account.motorcycle,
-                              serviceRecord: c.account.service_record,
+                              serviceRecord: c.account.serviceRecord,
                               warrantyClaim: c.publicKey,
                               resolution: form[`res-${c.publicKey}`] || "Resuelta por el taller",
                             }),

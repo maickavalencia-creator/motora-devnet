@@ -1,0 +1,1905 @@
+{
+  "address": "EtK8VMUzDmJwEwDkuNif9LXSKWrWiXxmpDviLRsGu1XU",
+  "metadata": {
+    "name": "motora",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "MOTORA - verifiable motorcycle maintenance histories and linked warranties on Solana"
+  },
+  "instructions": [
+    {
+      "name": "archive_motorcycle",
+      "docs": [
+        "Conditional archival. A motorcycle can only be archived by its owner,",
+        "when it has neither open warranty claims nor pending interventions.",
+        "The account is retained so the maintenance history stays verifiable."
+      ],
+      "discriminator": [
+        215,
+        1,
+        146,
+        119,
+        138,
+        65,
+        225,
+        44
+      ],
+      "accounts": [
+        {
+          "name": "motorcycle",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  111,
+                  116,
+                  111,
+                  114,
+                  99,
+                  121,
+                  99,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "motorcycle.identifier_hash",
+                "account": "Motorcycle"
+              }
+            ]
+          }
+        },
+        {
+          "name": "protocol",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  116,
+                  111,
+                  99,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "identifier_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "create_service_record",
+      "docs": [
+        "Creates a maintenance intervention. The record id must be the next",
+        "sequential id of the motorcycle, which fixes the PDA deterministically."
+      ],
+      "discriminator": [
+        223,
+        195,
+        96,
+        231,
+        81,
+        111,
+        167,
+        132
+      ],
+      "accounts": [
+        {
+          "name": "protocol",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  116,
+                  111,
+                  99,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "motorcycle",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  111,
+                  116,
+                  111,
+                  114,
+                  99,
+                  121,
+                  99,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "motorcycle.identifier_hash",
+                "account": "Motorcycle"
+              }
+            ]
+          }
+        },
+        {
+          "name": "workshop",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  111,
+                  114,
+                  107,
+                  115,
+                  104,
+                  111,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "workshop.authority",
+                "account": "Workshop"
+              }
+            ]
+          }
+        },
+        {
+          "name": "service_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  114,
+                  118,
+                  105,
+                  99,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "motorcycle"
+              },
+              {
+                "kind": "arg",
+                "path": "record_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "record_id",
+          "type": "u64"
+        },
+        {
+          "name": "mileage",
+          "type": "u64"
+        },
+        {
+          "name": "service_type",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "create_warranty_claim",
+      "docs": [
+        "Opens a warranty claim. It must be tied to a finalized service, be",
+        "opened by the motorcycle owner, be inside the warranty window and there",
+        "may be only one open claim per service record."
+      ],
+      "discriminator": [
+        195,
+        147,
+        2,
+        166,
+        161,
+        1,
+        5,
+        203
+      ],
+      "accounts": [
+        {
+          "name": "protocol",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  116,
+                  111,
+                  99,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "motorcycle",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  111,
+                  116,
+                  111,
+                  114,
+                  99,
+                  121,
+                  99,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "motorcycle.identifier_hash",
+                "account": "Motorcycle"
+              }
+            ]
+          }
+        },
+        {
+          "name": "service_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  114,
+                  118,
+                  105,
+                  99,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "motorcycle"
+              },
+              {
+                "kind": "account",
+                "path": "service_record.record_id",
+                "account": "ServiceRecord"
+              }
+            ]
+          }
+        },
+        {
+          "name": "warranty_claim",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  97,
+                  114,
+                  114,
+                  97,
+                  110,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "service_record"
+              },
+              {
+                "kind": "arg",
+                "path": "claim_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "claimant",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "claim_id",
+          "type": "u64"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "finalize_service_record",
+      "docs": [
+        "Finalizes a pending intervention. This is the moment a warranty window",
+        "starts and the odometer of the motorcycle advances."
+      ],
+      "discriminator": [
+        159,
+        114,
+        138,
+        137,
+        120,
+        254,
+        251,
+        45
+      ],
+      "accounts": [
+        {
+          "name": "service_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  114,
+                  118,
+                  105,
+                  99,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "motorcycle"
+              },
+              {
+                "kind": "account",
+                "path": "service_record.record_id",
+                "account": "ServiceRecord"
+              }
+            ]
+          }
+        },
+        {
+          "name": "motorcycle",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  111,
+                  116,
+                  111,
+                  114,
+                  99,
+                  121,
+                  99,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "motorcycle.identifier_hash",
+                "account": "Motorcycle"
+              }
+            ]
+          }
+        },
+        {
+          "name": "workshop",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  111,
+                  114,
+                  107,
+                  115,
+                  104,
+                  111,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "workshop.authority",
+                "account": "Workshop"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize",
+      "docs": [
+        "Creates the singleton protocol account. Idempotency is provided by the",
+        "`init` constraint: a second call fails with AccountAlreadyInUse."
+      ],
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "protocol",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  116,
+                  111,
+                  99,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "register_motorcycle",
+      "docs": [
+        "Registers a motorcycle. `identifier_hash` is a SHA-256 digest of the",
+        "normalized VIN plus a client-side salt; the VIN itself never goes on-chain."
+      ],
+      "discriminator": [
+        221,
+        230,
+        75,
+        83,
+        38,
+        201,
+        122,
+        74
+      ],
+      "accounts": [
+        {
+          "name": "protocol",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  116,
+                  111,
+                  99,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "motorcycle",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  111,
+                  116,
+                  111,
+                  114,
+                  99,
+                  121,
+                  99,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "identifier_hash"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "identifier_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "brand",
+          "type": "string"
+        },
+        {
+          "name": "model",
+          "type": "string"
+        },
+        {
+          "name": "year",
+          "type": "u16"
+        },
+        {
+          "name": "initial_mileage",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "register_workshop",
+      "docs": [
+        "Registers a workshop. One workshop per authority (PDA seed)."
+      ],
+      "discriminator": [
+        216,
+        0,
+        194,
+        207,
+        143,
+        248,
+        134,
+        116
+      ],
+      "accounts": [
+        {
+          "name": "protocol",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  116,
+                  111,
+                  99,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "workshop",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  111,
+                  114,
+                  107,
+                  115,
+                  104,
+                  111,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "resolve_warranty_claim",
+      "docs": [
+        "Resolves an open claim. Only the authority of the workshop responsible",
+        "for the linked service may resolve it."
+      ],
+      "discriminator": [
+        136,
+        2,
+        47,
+        218,
+        40,
+        5,
+        184,
+        107
+      ],
+      "accounts": [
+        {
+          "name": "warranty_claim",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  97,
+                  114,
+                  114,
+                  97,
+                  110,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "service_record"
+              },
+              {
+                "kind": "account",
+                "path": "warranty_claim.claim_id",
+                "account": "WarrantyClaim"
+              }
+            ]
+          }
+        },
+        {
+          "name": "service_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  114,
+                  118,
+                  105,
+                  99,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "motorcycle"
+              },
+              {
+                "kind": "account",
+                "path": "service_record.record_id",
+                "account": "ServiceRecord"
+              }
+            ]
+          }
+        },
+        {
+          "name": "motorcycle",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  111,
+                  116,
+                  111,
+                  114,
+                  99,
+                  121,
+                  99,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "motorcycle.identifier_hash",
+                "account": "Motorcycle"
+              }
+            ]
+          }
+        },
+        {
+          "name": "workshop",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  111,
+                  114,
+                  107,
+                  115,
+                  104,
+                  111,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "workshop.authority",
+                "account": "Workshop"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "resolution",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "set_workshop_status",
+      "docs": [
+        "Activates or deactivates a workshop. Only its own authority may do so."
+      ],
+      "discriminator": [
+        181,
+        68,
+        150,
+        122,
+        241,
+        238,
+        173,
+        129
+      ],
+      "accounts": [
+        {
+          "name": "workshop",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  111,
+                  114,
+                  107,
+                  115,
+                  104,
+                  111,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "active",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "update_motorcycle",
+      "docs": [
+        "Updates mutable descriptive data and the odometer. Mileage may never",
+        "decrease, and may only be changed by the recorded owner."
+      ],
+      "discriminator": [
+        84,
+        112,
+        216,
+        158,
+        161,
+        226,
+        101,
+        74
+      ],
+      "accounts": [
+        {
+          "name": "motorcycle",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  111,
+                  116,
+                  111,
+                  114,
+                  99,
+                  121,
+                  99,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "motorcycle.identifier_hash",
+                "account": "Motorcycle"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "brand",
+          "type": "string"
+        },
+        {
+          "name": "model",
+          "type": "string"
+        },
+        {
+          "name": "new_mileage",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "update_service_record",
+      "docs": [
+        "Modifies a pending intervention. Only the workshop that authored it may",
+        "modify it, and finalized records are immutable."
+      ],
+      "discriminator": [
+        180,
+        64,
+        223,
+        8,
+        62,
+        208,
+        184,
+        240
+      ],
+      "accounts": [
+        {
+          "name": "service_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  114,
+                  118,
+                  105,
+                  99,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "motorcycle"
+              },
+              {
+                "kind": "account",
+                "path": "service_record.record_id",
+                "account": "ServiceRecord"
+              }
+            ]
+          }
+        },
+        {
+          "name": "motorcycle"
+        },
+        {
+          "name": "workshop"
+        },
+        {
+          "name": "authority",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "mileage",
+          "type": "u64"
+        },
+        {
+          "name": "service_type",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Motorcycle",
+      "discriminator": [
+        185,
+        116,
+        249,
+        249,
+        159,
+        254,
+        48,
+        231
+      ]
+    },
+    {
+      "name": "Protocol",
+      "discriminator": [
+        45,
+        39,
+        101,
+        43,
+        115,
+        72,
+        131,
+        40
+      ]
+    },
+    {
+      "name": "ServiceRecord",
+      "discriminator": [
+        201,
+        143,
+        104,
+        22,
+        22,
+        102,
+        50,
+        110
+      ]
+    },
+    {
+      "name": "WarrantyClaim",
+      "discriminator": [
+        219,
+        194,
+        76,
+        243,
+        193,
+        86,
+        87,
+        43
+      ]
+    },
+    {
+      "name": "Workshop",
+      "discriminator": [
+        2,
+        167,
+        214,
+        84,
+        84,
+        92,
+        226,
+        56
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "MotorcycleArchived",
+      "discriminator": [
+        151,
+        78,
+        170,
+        185,
+        19,
+        214,
+        119,
+        147
+      ]
+    },
+    {
+      "name": "MotorcycleRegistered",
+      "discriminator": [
+        239,
+        152,
+        164,
+        136,
+        134,
+        225,
+        12,
+        169
+      ]
+    },
+    {
+      "name": "MotorcycleUpdated",
+      "discriminator": [
+        91,
+        88,
+        197,
+        19,
+        81,
+        91,
+        148,
+        244
+      ]
+    },
+    {
+      "name": "ProtocolInitialized",
+      "discriminator": [
+        173,
+        122,
+        168,
+        254,
+        9,
+        118,
+        76,
+        132
+      ]
+    },
+    {
+      "name": "ServiceRecordCreated",
+      "discriminator": [
+        220,
+        242,
+        41,
+        254,
+        33,
+        2,
+        87,
+        130
+      ]
+    },
+    {
+      "name": "ServiceRecordFinalized",
+      "discriminator": [
+        122,
+        65,
+        149,
+        61,
+        58,
+        218,
+        160,
+        141
+      ]
+    },
+    {
+      "name": "ServiceRecordUpdated",
+      "discriminator": [
+        82,
+        206,
+        140,
+        104,
+        219,
+        148,
+        223,
+        164
+      ]
+    },
+    {
+      "name": "WarrantyClaimCreated",
+      "discriminator": [
+        123,
+        139,
+        36,
+        52,
+        56,
+        176,
+        137,
+        70
+      ]
+    },
+    {
+      "name": "WarrantyClaimResolved",
+      "discriminator": [
+        53,
+        151,
+        161,
+        54,
+        36,
+        159,
+        254,
+        10
+      ]
+    },
+    {
+      "name": "WorkshopRegistered",
+      "discriminator": [
+        176,
+        45,
+        127,
+        77,
+        53,
+        36,
+        139,
+        236
+      ]
+    },
+    {
+      "name": "WorkshopStatusChanged",
+      "discriminator": [
+        31,
+        254,
+        202,
+        15,
+        108,
+        206,
+        69,
+        225
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "UnauthorizedWorkshop",
+      "msg": "The signer is not authorized for this operation"
+    },
+    {
+      "code": 6001,
+      "name": "NotMotorcycleOwner",
+      "msg": "The signer is not the owner of this motorcycle"
+    },
+    {
+      "code": 6002,
+      "name": "WorkshopInactive",
+      "msg": "The workshop is not active"
+    },
+    {
+      "code": 6003,
+      "name": "MotorcycleInactive",
+      "msg": "The motorcycle is archived"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidMileage",
+      "msg": "The odometer reading is invalid or lower than the current one"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidYear",
+      "msg": "The manufacturing year is invalid"
+    },
+    {
+      "code": 6006,
+      "name": "EmptyField",
+      "msg": "Text fields cannot be empty"
+    },
+    {
+      "code": 6007,
+      "name": "InvalidStringLength",
+      "msg": "A text field exceeds the maximum length allowed by the account"
+    },
+    {
+      "code": 6008,
+      "name": "ServiceFinalized",
+      "msg": "The service record is already finalized and cannot be modified"
+    },
+    {
+      "code": 6009,
+      "name": "ServiceNotFinalized",
+      "msg": "The linked service record is not finalized"
+    },
+    {
+      "code": 6010,
+      "name": "InvalidRecordId",
+      "msg": "The service record id does not match the motorcycle sequence"
+    },
+    {
+      "code": 6011,
+      "name": "InvalidClaimId",
+      "msg": "The warranty claim id does not match the service sequence"
+    },
+    {
+      "code": 6012,
+      "name": "ClaimAlreadyOpen",
+      "msg": "This service already has an open warranty claim"
+    },
+    {
+      "code": 6013,
+      "name": "ClaimNotOpen",
+      "msg": "The warranty claim is not open"
+    },
+    {
+      "code": 6014,
+      "name": "ClaimWindowExpired",
+      "msg": "The warranty window has expired"
+    },
+    {
+      "code": 6015,
+      "name": "OpenClaimsExist",
+      "msg": "The motorcycle has open warranty claims"
+    },
+    {
+      "code": 6016,
+      "name": "PendingServicesExist",
+      "msg": "The motorcycle has pending maintenance interventions"
+    },
+    {
+      "code": 6017,
+      "name": "AlreadyArchived",
+      "msg": "The motorcycle is already archived"
+    },
+    {
+      "code": 6018,
+      "name": "AccountMismatch",
+      "msg": "Accounts passed to this instruction do not belong together"
+    },
+    {
+      "code": 6019,
+      "name": "InvalidState",
+      "msg": "The requested workshop status is already active"
+    },
+    {
+      "code": 6020,
+      "name": "ArithmeticOverflow",
+      "msg": "Arithmetic overflow while updating a counter"
+    }
+  ],
+  "types": [
+    {
+      "name": "ClaimStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Open"
+          },
+          {
+            "name": "Resolved"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Motorcycle",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "identifier_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "brand",
+            "type": "string"
+          },
+          {
+            "name": "model",
+            "type": "string"
+          },
+          {
+            "name": "year",
+            "type": "u16"
+          },
+          {
+            "name": "current_mileage",
+            "type": "u64"
+          },
+          {
+            "name": "active",
+            "type": "bool"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "service_count",
+            "type": "u64"
+          },
+          {
+            "name": "pending_services",
+            "type": "u64"
+          },
+          {
+            "name": "open_claims",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MotorcycleArchived",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "motorcycle",
+            "type": "pubkey"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MotorcycleRegistered",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "motorcycle",
+            "type": "pubkey"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "identifier_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MotorcycleUpdated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "motorcycle",
+            "type": "pubkey"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "mileage",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Protocol",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "total_motorcycles",
+            "type": "u64"
+          },
+          {
+            "name": "active_motorcycles",
+            "type": "u64"
+          },
+          {
+            "name": "total_workshops",
+            "type": "u64"
+          },
+          {
+            "name": "total_service_records",
+            "type": "u64"
+          },
+          {
+            "name": "total_warranty_claims",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProtocolInitialized",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ServiceRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "motorcycle",
+            "type": "pubkey"
+          },
+          {
+            "name": "workshop",
+            "type": "pubkey"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "record_id",
+            "type": "u64"
+          },
+          {
+            "name": "mileage",
+            "type": "u64"
+          },
+          {
+            "name": "service_type",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "ServiceStatus"
+              }
+            }
+          },
+          {
+            "name": "claim_count",
+            "type": "u64"
+          },
+          {
+            "name": "open_claim",
+            "type": "bool"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "updated_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ServiceRecordCreated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "service_record",
+            "type": "pubkey"
+          },
+          {
+            "name": "motorcycle",
+            "type": "pubkey"
+          },
+          {
+            "name": "workshop",
+            "type": "pubkey"
+          },
+          {
+            "name": "record_id",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ServiceRecordFinalized",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "service_record",
+            "type": "pubkey"
+          },
+          {
+            "name": "motorcycle",
+            "type": "pubkey"
+          },
+          {
+            "name": "workshop",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ServiceRecordUpdated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "service_record",
+            "type": "pubkey"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ServiceStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Pending"
+          },
+          {
+            "name": "Finalized"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WarrantyClaim",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "motorcycle",
+            "type": "pubkey"
+          },
+          {
+            "name": "service_record",
+            "type": "pubkey"
+          },
+          {
+            "name": "claimant",
+            "type": "pubkey"
+          },
+          {
+            "name": "workshop",
+            "type": "pubkey"
+          },
+          {
+            "name": "claim_id",
+            "type": "u64"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "ClaimStatus"
+              }
+            }
+          },
+          {
+            "name": "resolution",
+            "type": "string"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "resolved_at",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WarrantyClaimCreated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "warranty_claim",
+            "type": "pubkey"
+          },
+          {
+            "name": "service_record",
+            "type": "pubkey"
+          },
+          {
+            "name": "claimant",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WarrantyClaimResolved",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "warranty_claim",
+            "type": "pubkey"
+          },
+          {
+            "name": "workshop",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Workshop",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "active",
+            "type": "bool"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "services_completed",
+            "type": "u64"
+          },
+          {
+            "name": "claims_resolved",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WorkshopRegistered",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "workshop",
+            "type": "pubkey"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WorkshopStatusChanged",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "workshop",
+            "type": "pubkey"
+          },
+          {
+            "name": "active",
+            "type": "bool"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    }
+  ]
+}

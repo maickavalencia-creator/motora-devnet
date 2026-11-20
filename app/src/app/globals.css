@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+
+html, body { min-height: 100%; }
+
+body {
+  background:
+    radial-gradient(900px 500px at 85% -10%, rgba(200, 255, 46, .07), transparent 60%),
+    radial-gradient(700px 500px at -10% 20%, rgba(255, 91, 46, .06), transparent 55%),
+    #07090d;
+  color: #e8edf4;
+  font-feature-settings: "ss01", "cv01";
+}
+
+::selection { background: rgba(200, 255, 46, .3); }
+
+.scroll-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+.scroll-thin::-webkit-scrollbar-thumb { background: #26313f; border-radius: 99px; }
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-edge bg-panel/80 backdrop-blur-sm;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .btn-primary {
+    @apply btn bg-acid text-ink hover:shadow-glow hover:brightness-110;
+  }
+  .btn-ghost {
+    @apply btn border border-edge bg-white/[.03] text-slate-200 hover:border-acid/50 hover:text-white;
+  }
+  .btn-danger {
+    @apply btn border border-ember/40 bg-ember/10 text-ember hover:bg-ember/20;
+  }
+  .field {
+    @apply w-full rounded-xl border border-edge bg-black/40 px-3.5 py-2.5 text-sm text-white outline-none transition focus:border-acid/60 focus:ring-2 focus:ring-acid/10 placeholder:text-slate-600;
+  }
+  .label {
+    @apply mb-1.5 block text-[11px] font-semibold uppercase tracking-[.16em] text-muted;
+  }
+  .tag {
+    @apply inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-medium;
+  }
+}
+
+.wallet-adapter-button {
+  background: transparent !important;
+  height: 40px !important;
+  font-family: inherit !important;
+  font-size: 13px !important;
+}
+.wallet-adapter-modal-wrapper { background: #0e1218 !important; }

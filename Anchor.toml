@@ -1,0 +1,19 @@
+[features]
+seeds = false
+skip-lint = false
+
+[programs.localnet]
+motora = "EtK8VMUzDmJwEwDkuNif9LXSKWrWiXxmpDviLRsGu1XU"
+
+[programs.devnet]
+motora = "EtK8VMUzDmJwEwDkuNif9LXSKWrWiXxmpDviLRsGu1XU"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "Localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "npm run test:program"

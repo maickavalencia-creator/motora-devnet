@@ -1,0 +1,24 @@
+# build artifacts
+target/
+.next/
+out/
+dist/
+*.log
+!evidence/devnet/deploy.log
+
+# dependencies
+node_modules/
+
+# secrets — never commit
+keypairs/
+*.json.keypair
+id.json
+
+# editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.tsbuildinfo
+
+# next
+app/next-env.d.ts

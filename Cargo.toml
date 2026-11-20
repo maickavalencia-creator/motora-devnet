@@ -1,0 +1,15 @@
+[workspace]
+members = ["programs/motora"]
+resolver = "2"
+
+[profile.release]
+overflow-checks = true
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+
+[profile.release.build-override]
+opt-level = 3
+codegen-units = 1
+debug = false
+incremental = false

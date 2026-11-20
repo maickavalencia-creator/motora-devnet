@@ -448,7 +448,7 @@ export default function Home() {
                     .filter((s) => status(s.account.status) === "finalized" && !s.account.openClaim)
                     .map((s) => (
                       <option key={s.publicKey} value={s.publicKey}>
-                        #{s.account.record_id ?? s.account.recordId} · {s.account.serviceType} · {short(s.publicKey, 4)}
+                        #{s.account.recordId.toString()} · {s.account.serviceType} · {short(s.publicKey, 4)}
                       </option>
                     ))}
                 </Select>
@@ -573,7 +573,7 @@ function ServiceCard({ row, m, set, form }: {
       </div>
       <p className="mt-1 text-xs text-muted">{s.description}</p>
       <p className="mt-2 font-mono text-[10px] leading-relaxed text-muted">
-        moto {short(s.motorcycle.toBase58(), 5)} · {s.mileage.toString()} km · #{s.recordId?.toString() ?? s.record_id}
+        moto {short(s.motorcycle.toBase58(), 5)} · {s.mileage.toString()} km · #{s.recordId?.toString() ?? "—"}
       </p>
       <div className="mt-3 flex items-center gap-2">
         <a href={explorerAddress(row.publicKey)} target="_blank" rel="noreferrer" className="text-[11px] text-acid hover:underline">

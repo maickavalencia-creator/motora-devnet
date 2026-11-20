@@ -47,25 +47,43 @@ export function useMotora() {
   }, [connection, wallet]);
 
   const refresh = useCallback(async () => {
-    try {
-      const [protocol, motorcycles, workshops, services, claims] = await Promise.all([
+    const load = () =>
+      Promise.all([
         client.protocol().catch(() => null),
         client.motorcycles(),
         client.workshops(),
         client.serviceRecords(),
         client.claims(),
       ]);
-      const serialize = (list: any[]): AccountRow[] =>
-        list.map((r) => ({ publicKey: r.publicKey.toBase58(), account: r.account }));
-      setRows({
-        protocol,
-        motorcycles: serialize(motorcycles),
-        workshops: serialize(workshops),
-        services: serialize(services),
-        claims: serialize(claims),
-      });
-    } catch (err) {
-      setNotice({ kind: "error", text: explainError(err) });
+
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const [protocol, motorcycles, workshops, services, claims] = await load();
+        const serialize = (list: any[]): AccountRow[] =>
+          list.map((r) => ({ publicKey: r.publicKey.toBase58(), account: r.account }));
+        setRows({
+          protocol,
+          motorcycles: serialize(motorcycles),
+          workshops: serialize(workshops),
+          services: serialize(services),
+          claims: serialize(claims),
+        });
+        return;
+      } catch (err) {
+        const text = explainError(err);
+        const throttled = /429|too many requests/i.test(text);
+        if (throttled && attempt < 2) {
+          await new Promise((resolve) => setTimeout(resolve, 3000 * (attempt + 1)));
+          continue;
+        }
+        setNotice({
+          kind: "error",
+          text: throttled
+            ? "Devnet está limitando las consultas. Espera unos segundos y pulsa Actualizar."
+            : text,
+        });
+        return;
+      }
     }
   }, [client]);
 

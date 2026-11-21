@@ -5,7 +5,7 @@
 MOTORA es un programa Anchor **desplegado y verificado en Solana Devnet** que registra motocicletas, talleres, intervenciones mecánicas y reclamaciones de garantía como cuentas on-chain relacionadas. Cada cambio relevante pasa por el programa: la interfaz web solo construye y firma transacciones; no decide permisos.
 
 - **Program ID (Devnet):** `EtK8VMUzDmJwEwDkuNif9LXSKWrWiXxmpDviLRsGu1XU` — [Explorer](https://explorer.solana.com/address/EtK8VMUzDmJwEwDkuNif9LXSKWrWiXxmpDviLRsGu1XU?cluster=devnet)
-- **Deploy:** [firma](https://explorer.solana.com/tx/5c2fKaZMEcVVqJzM81QJVzAgL3C5H8jGaqgyMNDozb9HN5eY6dbn7uVAGDU2cfPAxrLJp5WyKubSYNtkzjjsd9uc?cluster=devnet) · **21/21 operaciones Devnet PASS** (11 válidas + 10 rechazos) · [evidencia](evidence/devnet/INTEGRATION-RESULTS.md)
+- **Deploy:** [firma](https://explorer.solana.com/tx/5c2fKaZMEcVVqJzM81QJVzAgL3C5H8jGaqgyMNDozb9HN5eY6dbn7uVAGDU2cfPAxrLJp5WyKubSYNtkzjjsd9uc?cluster=devnet) · **23/23 operaciones Devnet PASS** (2 init + 11 válidas + 10 rechazos) · [evidencia](evidence/devnet/INTEGRATION-RESULTS.md)
 
 ---
 
@@ -236,3 +236,9 @@ Cada caso válido lleva su enlace a Explorer y cada rechazo registra el código/
 ## 22. Demo
 
 Guion de 60–90 segundos: [`DEMO.md`](DEMO.md).
+
+## 23. Identificación
+
+- **Nombre para el certificado:** Maicka Edgar Valencia Velazquez
+- **Correos declarados para registro y notificaciones:** maickavalencia@gmail.com (personal) y maicka_valencia@upatlautla.edu.mx (institucional).
+

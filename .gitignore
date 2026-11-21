@@ -13,6 +13,7 @@ node_modules/
 keypairs/
 *.json.keypair
 id.json
+.anchor/test-ledger/
 
 # editor / OS
 .DS_Store

@@ -60,7 +60,7 @@ Luego archivar una moto **sin** pendientes y mostrar el badge **ARCHIVADA** con 
 
 ## 1:25–1:30 — Cierre
 
-> «MOTORA: historial verificable, garantías ligadas al mantenimiento y cierre condicionado, con permisos aplicados dentro del programa. Repositorio, IDL, cliente, pruebas y evidencias están en `motora/`.»
+> «MOTORA: historial verificable, garantías ligadas al mantenimiento y cierre condicionado, con permisos aplicados dentro del programa. Repositorio, IDL, cliente, pruebas y evidencias están en `motora-devnet/`.»
 
 ---
 

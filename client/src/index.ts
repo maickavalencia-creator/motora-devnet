@@ -90,6 +90,7 @@ const ERROR_MESSAGES: Record<string, string> = {
   InvalidMileage: "El kilometraje debe ser válido y nunca menor al actual.",
   InvalidYear: "El año de fabricación no es válido.",
   EmptyField: "Los campos de texto no pueden estar vacíos.",
+  InvalidStringLength: "Un campo de texto supera la longitud máxima permitida.",
   ServiceFinalized: "El mantenimiento ya está finalizado y no se puede modificar.",
   ServiceNotFinalized: "La reclamación requiere un mantenimiento finalizado.",
   InvalidRecordId: "El identificador de mantenimiento no corresponde a la secuencia.",

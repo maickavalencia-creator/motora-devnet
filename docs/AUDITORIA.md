@@ -28,7 +28,7 @@ Fecha: 2026-11-20. Se revisan los criterios del track y la lista de cumplimiento
 
 1. **Flujo funcional programa ↔ frontend.** Implementado: todas las secciones envían transacciones reales y recargan cuentas tras confirmación. El programa está en Devnet y las operaciones equivalentes se ejecutaron y verificaron por script; la prueba manual con la wallet del evaluador sigue siendo opcional.
 2. **Reglas críticas en el programa.** Implementado y probado: autoridad, pertenencia y cierre condicionado están en Rust (ver `docs/SEGURIDAD.md`).
-3. **Firma, confirmación, actualización y errores.** Implementado: `explainError()` traduce los 20 códigos propios; la UI muestra el error y no actualiza estado en caso de rechazo. Los rechazos Devnet muestran los códigos exactos de Anchor.
+3. **Firma, confirmación, actualización y errores.** Implementado: `explainError()` traduce los 21 códigos propios; la UI muestra el error y no actualiza estado en caso de rechazo. Los rechazos Devnet muestran los códigos exactos de Anchor.
 4. **Reproducibilidad.** Implementado: `npm run setup`, `anchor build`, `anchor test`, scripts `devnet:*`, `npm run verify` y `npm run devnet:all`.
 5. **Aporte identificable.** Garantías vinculadas a mantenimientos finalizados, con reglas y rechazos propios.
 

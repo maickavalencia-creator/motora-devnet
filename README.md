@@ -240,5 +240,6 @@ Guion de 60–90 segundos: [`DEMO.md`](DEMO.md).
 ## 23. Identificación
 
 - **Nombre para el certificado:** Maicka Edgar Valencia Velazquez
-- **Correos declarados para registro y notificaciones:** maickavalencia@gmail.com (personal) y maicka_valencia@upatlautla.edu.mx (institucional).
+- **Correo utilizado en el registro:** maicka_valencia@upatlautla.edu.mx
+- **Correo personal de contacto (declarado adicionalmente):** maickavalencia@gmail.com
 
